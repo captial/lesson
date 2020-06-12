@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<link rel="stylesheet" href="css/bootstrap.css">
+		<script src="js/jquery-1.11.3.js"></script>
+		<script src="js/bootstrap.js"></script>
+		
+		<!--分页-->
+		<link rel="stylesheet" href="css/pagination.css" />
+		<script type="text/javascript" src="js/jquery.pagination.js"></script>
+		<style>
+			.setPageDiv {
+				margin: auto;
+				margin-bottom: 91px;
+				margin-top: 37px;
+			}
+			.setPageDiv #showCount{
+				position: relative;
+				top: 7px;
+				left: 83px;
+				font-size: 17px;
+			}
+			#pagination {
+				margin: auto;
+				margin-left: 100px;
+			}
+			#pagination span,a{
+				border: 1px solid rgb(51, 102, 204);
+				border-radius: 5px;
+				background-color: white;
+				color:rgb(51, 102, 204) !important;
+			}
+			.img-responsive {
+				width: 30px;
+				height: 30px;
+			}
+			.inhtml{
+				height: 300px;
+				border: 1px solid;
+			}
+		</style>
+		
+	</head>
+
+	<body>
+		<div class="zxdong">
+			<div class="zxdong_inner container">
+					<div class="list">
+
+					</div>
+
+			</div>
+		</div>
+
+		<div class="setPageDiv container">
+			<div class="Pagination pull-right" id="pagination"></div>
+			<div id="showCount" class="pull-right"></div>
+		</div>
+		
+	</body>
+	<script>
+		//分页
+		$(function() {
+			// $('.setPageDiv').change(function() {
+			// 	console.log(parseInt($(this).val()))
+			// 	getMsg(parseInt($(this).val()))
+			// })
+			function getMsg() {
+				$.ajax({
+					url: 'data/page.json',
+					type: 'GET',
+					dataType: 'json',
+					success: function(data) {
+						//1.计算分页数量
+						
+						var showNum = 8;
+						var dataL = data.list.length;
+						$("#showCount").append("共有"+dataL+"条数据")
+						console.log(dataL)
+						$('.Pagination').pagination(dataL, {
+							current_page:0,//当前选中的页面
+							 num_edge_entries: 2, //边缘页数
+							num_display_entries: 4, //主体页数
+							items_per_page: 8, //每页显示的个数
+							link_to:"#",
+							prev_text: "上一页",
+							next_text: "下一页",
+							num_edge_entries:2,//省略号后面显示的个数
+							jump: true,
+							callback: function(index) {
+								var html = '<div class="col-md-12">'
+								
+								// console.log(showNum * index + '~' + parseInt(showNum * index) + parseInt(showNum))
+								for(var i = showNum * index; i < showNum * index + showNum; i++) {
+									if(i < dataL) {
+
+										// var img = data.list[i].img;
+										var manager = data.list[i].manager; //交易类型
+										// html += "<div class='row'>";
+										// html += "<div class='col-md-3   col-xs-1'>"
+										// // html += "<img src='" + img + "'/   class='img-responsive'>"
+										// html += "</div>"
+										html += "<div class='col-md-3 inhtml'>"+ manager +"</div>";
+									}
+								}
+								html += '</div>';
+								$('.list').html(html)
+							}
+						})
+
+					}
+				})
+			}
+			getMsg()
+
+		})
+	</script>
+
+</html>
