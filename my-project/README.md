@@ -1,4 +1,4 @@
-# my-project
+# gowhere
 
 > A Vue.js project
 
